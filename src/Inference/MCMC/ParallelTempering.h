@@ -169,7 +169,7 @@ public:
 		
 	}
 	
-	void show_statistics() {
+	void show_statistics(std::string prefix="") {
 		
 		// TODO: This raelly needs a lock, but for some reason there is a lock problem that eventually hangs
 		// when we do it. Not sure why, very hard to debug/understand. Might be that the current_mutex is held
@@ -185,7 +185,7 @@ public:
 			auto cpy = this->pool[i].current; // otherwise, without a mutex, it can change between accessing string and posterior, which is gnarly
 			//guard.unlock();
 			
-			print(i, 
+			print(prefix, i,
 					double(this->pool[i].temperature),
 					cpy.posterior,
 					this->pool[i].acceptance_ratio(),
