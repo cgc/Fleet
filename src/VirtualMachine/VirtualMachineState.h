@@ -234,6 +234,7 @@ public:
 	 */	
 	 output_t run() {
 		status = vmstatus_t::GOOD;
+		uintmax_t vm_ops = 0;
 		
 		try { 
 			
@@ -244,7 +245,7 @@ public:
 					throw VMSRuntimeError();
 				}
 				
-				FleetStatistics::vm_ops++;
+				vm_ops++;
 				
 				Instruction i = program.top(); program.pop();
 				
@@ -261,6 +262,9 @@ public:
 			status = vmstatus_t::ERROR;
 		}
 		
+		// Add to global counter once execution is complete.
+		FleetStatistics::vm_ops += vm_ops;
+
 		// when we exit, set the status to complete if we are good
 		// otherwise, leave it where it was
 		if(status == vmstatus_t::GOOD) {
