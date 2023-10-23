@@ -67,6 +67,8 @@ public:
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 	
+	std::string last_exception_message;
+
 private:
 	// these are private and should only be accessed via stack(), mem(), memstack() below
 	
@@ -260,6 +262,8 @@ public:
 		} catch (VMSRuntimeError& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
+			auto w = e.what();
+			last_exception_message = w == NULL ? "null" : std::string(w);
 		}
 		
 		// Add to global counter once execution is complete.
